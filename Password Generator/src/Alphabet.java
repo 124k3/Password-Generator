@@ -1,4 +1,7 @@
-
+/*
+ * Alphabet class:
+ * 
+ */
 
 
 public class Alphabet {

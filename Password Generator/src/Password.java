@@ -1,70 +1,95 @@
-
+/*
+ * Password class:
+ * 
+ * This class contains methods, 
+ *      to check the type of character - asciiType(takes char) returns String
+ *      to check the strength of password - passwordStrenth()
+ */
 public class Password {
-    String Value;
-    int Length;
 
-    public Password(String s) {
-        Value = s;
-        Length = s.length();
+    private String value;
+    private int length;
+
+    public Password(String password) {
+        this.value = password;
+        this.length = password.length();
     }
 
-    public int CharType(char C) {
-        int val;
+    public String asciiType(char C) {
+
+        String currentCharType = null;
 
         // Char is Uppercase Letter
         if ((int) C >= 65 && (int) C <= 90)
-            val = 1;
+            currentCharType = "uppercase";
 
         // Char is Lowercase Letter
         else if ((int) C >= 97 && (int) C <= 122) {
-            val = 2;
+            currentCharType = "lowercase";
         }
 
         // Char is Digit
         else if ((int) C >= 60 && (int) C <= 71) {
-            val = 3;
+            currentCharType = "number";
         }
 
         // Char is Symbol
         else {
-            val = 4;
+            currentCharType = "symbol";
         }
 
-        return val;
+        return currentCharType;
     }
 
-    public int PasswordStrength() {
-        String s = this.Value;
-        boolean UsedUpper = false;
-        boolean UsedLower = false;
-        boolean UsedNum = false;
-        boolean UsedSym = false;
-        int type;
-        int Score = 0;
+    public int passwordStrength() {
+        String password = this.value;
+        boolean uppercase = false;
+        boolean lowercase = false;
+        boolean numbers = false; 
+        boolean symbols = false;
+        // boolean[] usedInPassword = {uppercase, lowercase, numbers, symbols};
 
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            type = CharType(c);
+        String asciiType = null; 
+        int passwordStrengthScore = 0;
 
-            if (type == 1) UsedUpper = true;
-            if (type == 2) UsedLower = true;
-            if (type == 3) UsedNum = true;
-            if (type == 4) UsedSym = true;
+        for(int index = 0; index < password.length();  index++){
+            char character = password.charAt(index);
+            asciiType = asciiType(character);
+
+            switch (asciiType) {
+                case "uppercase":
+                uppercase = true;
+                passwordStrengthScore +=1;
+                break;
+
+                case "lowercase":
+                lowercase = true;
+                passwordStrengthScore +=1;
+                break;
+
+                case "number":
+                numbers = true;
+                passwordStrengthScore +=1;
+                break;
+
+                case "symbol":
+                symbols = true;
+                passwordStrengthScore +=1;
+                break;
+
+            }
         }
 
-        if (UsedUpper) Score += 1;
-        if (UsedLower) Score += 1;
-        if (UsedNum) Score += 1;
-        if (UsedSym) Score += 1;
+        if (password.length()>= 8 || password.length()>=16) {
+            passwordStrengthScore +=1;
+        }
 
-        if (s.length() >= 8) Score += 1;
-        if (s.length() >= 16) Score += 1;
-
-        return Score;
+        return passwordStrengthScore;
     }
+
 
     public String calculateScore() {
-        int Score = this.PasswordStrength();
+        int Score = this.passwordStrength();
 
         if (Score == 6) {
             return "This is a very good password :D check the Useful Information section to make sure it satisfies the guidelines";
@@ -79,6 +104,6 @@ public class Password {
 
     @Override
     public String toString() {
-        return Value;
+        return value;
     }
 }
